@@ -2,7 +2,7 @@
 # Quiz week 1
 #
 
-data <- read.csv(file = 'data/hw1_data.csv', header = TRUE)
+data <- read.csv(file = '../data/hw1_data.csv', header = TRUE)
 
 # Q11
 colnames(data)
@@ -15,6 +15,7 @@ nrow(data)
 
 # Q14
 data[nrow(data) - 1:0, ]
+tail(data, 2)
 
 # Q15
 data[47, 'Ozone']
