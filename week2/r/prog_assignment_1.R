@@ -20,20 +20,29 @@ pollutantmean <- function(directory, pollutant, id = 1:332){
   ## NOTE: Do not round the result!
   
   num_files <- length(id)
-#   leading_zeros <- nchar(as.character(max(id))) - 1
-#   format_id <- trimws(paste0('%', paste0(rep('0', leading_zeros), collapse = ''),
-#                       leading_zeros + 1, 'i'))
-#   ids <- sprintf(fmt = format_id, id)
+  
+  ids <- vector(mode = 'character', length = num_files)
+  
+  for (i in id) {
+    if (i < 10) {
+      ids[i] <- paste("00", i, '.csv', sep = '')
+    }
+    else if (i < 100 & i > 9) {
+      ids[i] <- paste("0", i, '.csv', sep = '')
+    }
+    else ids[i] <- paste(as.character(i), '.csv', sep = '')
+  }
+  
   data <- data.frame(sum_x = vector(mode = 'numeric', length = num_files),
                      num_x = vector(mode = 'integer', length = num_files))
   
-  if (grepl('/$', directory)){
-    files <- paste(directory, id, '.csv', sep = '')
+  if (grepl('/$', directory)) {
+    files <- paste(directory, ids, sep = '')
   } else{
-    files <- paste(directory, '/', id, '.csv', sep = '')
+    files <- paste(directory, '/', ids, sep = '')
   }
   
-  for (i in seq_len(num_files)){
+  for (i in seq_len(num_files)) {
     tmp_data <- read.csv(file = files[i], header = TRUE)
     data[i, 1] <- sum(tmp_data[, pollutant], na.rm = TRUE)
     data[i, 2] <- sum(!is.na(tmp_data[, pollutant]))
@@ -45,7 +54,7 @@ pollutantmean <- function(directory, pollutant, id = 1:332){
   
 }
 
-pollutantmean('./data/specdata/', 'nitrate', 100)
+pollutantmean("specdata", "sulfate", 1:10)
 
 # Part 2
 
